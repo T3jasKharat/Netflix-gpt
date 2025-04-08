@@ -3,15 +3,14 @@ import Header from './Header';
 import { isValid } from '../utils/validate';
 import { auth } from '../utils/firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addUser } from '../utils/userSlice'
+import { NETFLIX_BG, USER_AVTAR } from '../utils/constants'
 
 
 const Login = () => {
   const [signIn, setSignIn] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const name = useRef(null);
@@ -34,12 +33,11 @@ const Login = () => {
         // Signed up
         const user = userCredential.user;
         updateProfile(user, {
-          displayName: name.current.value, photoURL: 'https://lh3.googleusercontent.com/a/ACg8ocIfPnqc3SWVPI2Ss7FnV3eS48fSdC9xRfeKd9w03ZKYpma5hyQT=s360-c-no'
+          displayName: name.current.value, photoURL: USER_AVTAR
         }).then(() => {
           // Profile updated!
           const {uid, email, displayName, photoURL} = auth.currentUser;
                   dispatch(addUser({uid: uid, email: email, displayName: displayName, photoURL: photoURL}));
-          navigate('/browse');
         }).catch((error) => {
           setErrorMsg(error.message)
         });
@@ -54,10 +52,6 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        const {uid, email, displayName, photoURL} = user;
-                  dispatch(addUser({uid: uid, email: email, displayName: displayName, photoURL: photoURL}));
-        console.log(user);
-        navigate('/browse');
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -75,7 +69,7 @@ const Login = () => {
 
       {/* Background Image */}
       <img
-        src="https://assets.nflxext.com/ffe/siteui/vlv3/98df3030-1c2b-4bd1-a2f5-13c611857edb/web/IN-en-20250331-TRIFECTA-perspective_247b6f06-c36d-4dff-a8eb-4013325c3f8e_large.jpg"
+        src={NETFLIX_BG}
         alt="Netflix Background"
         className="h-full w-full object-cover"
       />

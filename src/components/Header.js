@@ -1,28 +1,48 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { auth } from '../utils/firebase'
-import { signOut } from 'firebase/auth'
+import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
+import { addUser, removeUser } from '../utils/userSlice'
+import { NETFLIX_LOGO } from '../utils/constants'
 
 const Header = () => {
+  const dispatch = useDispatch();
   let user = useSelector((store) => store.user);
   const navigate = useNavigate();
 
   const handleSignOut = () => {
-    signOut(auth).then(() => {
-      navigate('/');
-    }).catch((error) => {
+    signOut(auth).then(() => {}).catch((error) => {
       // An error happened.
     });
   }
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
+        const {uid, email, displayName, photoURL} = user;
+        dispatch(addUser({uid: uid, email: email, displayName: displayName, photoURL: photoURL}));
+        navigate('/browse');
+      } else {
+        // User is signed out
+        dispatch(removeUser());
+        navigate('/');
+      }
+    });
+
+    //unsubscribing onAuthStateChanged eventlistener
+    return () => unsubscribe();
+  }, [])
+
   return (
-    <div className='flex align-middle'>
-      <div className='absolute w-44 mx-16 bg-gradient-to-b from-black'>
-        <img src='https://help.nflxext.com/helpcenter/OneTrust/oneTrust_production/consent/87b6a5c0-0104-4e96-a291-092c11350111/01938dc4-59b3-7bbc-b635-c4131030e85f/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png' />
+    <div className='flex justify-between items-center w-full pr-16 top-5 absolute z-50'>
+      <div className='w-44 mx-8'>
+        <img src={NETFLIX_LOGO} />
       </div>
       <div>
-        {user && <button className='bg-red-500 text-white font-bold absolute right-6 top-5 p-2 rounded-lg' onClick={handleSignOut}>Sign Out</button>}
+        {user && <button className='bg-red-500 text-white font-bold p-2 rounded-lg' onClick={handleSignOut}>Sign Out</button>}
       </div>
     </div>
   )
