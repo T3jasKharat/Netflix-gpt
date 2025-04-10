@@ -53,8 +53,8 @@ const Header = () => {
         <img src={NETFLIX_LOGO} className='hover:cursor-pointer'/>
       </div>
       {user && <div className='flex items-center'>
-        {showGptSearch && <select className='p-2 bg-gray-900 text-white rounded-lg' onClick={handleLangClick}>
-          {SUPPORTED_LANGUAGES.map((lang) => <option value={lang.identifier}>{lang.name}</option>)}
+        {showGptSearch && <select className='p-2 bg-gray-900 text-white rounded-lg border border-white cursor-pointer' onClick={handleLangClick}>
+          {SUPPORTED_LANGUAGES.map((lang) => <option key={lang.identifier} value={lang.identifier}>{lang.name}</option>)}
         </select>}
         <button onClick={handleGptSearch} className='p-2 mx-4 rounded-lg bg-purple-800 text-white'>{showGptSearch ? 'Go to Home' : 'GPT search'}</button>
         <img src={USER_AVTAR} className='w-8 h-8 rounded-full object-cover mr-4 hover:cursor-pointer'/>

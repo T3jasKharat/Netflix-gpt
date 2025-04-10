@@ -10,10 +10,10 @@ const GptSearch = () => {
         <img
           src={NETFLIX_BG}
           alt="Netflix Background"
-          className="h-full w-full object-cover absolute -z-10"
+          className="h-full w-full object-cover fixed -z-10"
         />
       </div>
-      <div className="absolute inset-0 bg-black bg-opacity-60 -z-10" />
+      <div className="fixed inset-0 bg-black bg-opacity-60 -z-10" />
       <GptSearchBar />
       <GptMovieSuggestions />
     </div>
