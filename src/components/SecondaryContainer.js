@@ -10,7 +10,7 @@ const SecondaryContainer = () => {
   if(!nowPlayingMovies.length && !popularMovies.length && !topRatedMovies.length && !upcomingMovies.length) return;
   return (
     <div className=' bg-black'>
-      <div className='-mt-52 pl-10 relative z-50'>
+      <div className='pl-6 md:-mt-52 md:pl-10 relative z-50'>
         <MovieList title={'Now Playing'} movies={nowPlayingMovies}/>
         <MovieList title={'Popular'} movies={popularMovies}/>
         <MovieList title={'Top Rated'} movies={topRatedMovies}/>

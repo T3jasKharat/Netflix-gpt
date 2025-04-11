@@ -48,7 +48,7 @@ const Header = () => {
   }, [])
 
   return (
-    <div className='flex justify-between items-center w-full pr-16 top-5 absolute z-50'>
+    <div className='flex flex-col justify-center md:justify-between items-center w-full md:pr-16 md:top-5 absolute z-50 md:flex-row'>
       <div className='w-44 mx-8'>
         <img src={NETFLIX_LOGO} className='hover:cursor-pointer'/>
       </div>
